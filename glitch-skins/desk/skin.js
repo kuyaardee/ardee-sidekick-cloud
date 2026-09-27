@@ -41,6 +41,7 @@ export function install(root, stream) {
   const fmtK = (n) => { n = +n || 0; return n >= 1e6 ? (n / 1e6).toFixed(2) + 'M' : n >= 1e3 ? (n / 1e3).toFixed(1) + 'k' : String(n); };
   const usd = (v) => '$' + (+v || 0).toFixed(2);
   const hms = () => new Date().toTimeString().slice(0, 8);
+  const unfence = (t) => String(t).replace(/^\s*```[\w-]*\s*$/gm, '').replace(/\n{3,}/g, '\n\n'); // md.js has no code blocks
   const hash = (t) => { let h = 7; for (const c of String(t)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
   const running = (a) => !TERMINAL.has(a.status) && !a.returned;
 
@@ -387,8 +388,8 @@ export function install(root, stream) {
       log.scrollTop = log.scrollHeight;
       return 'text';
     },
-    say_end(ev) { const b = blocks.get(ev.block_id); if (b) { b.classList.remove('caret'); renderMd(doc, b, b.textContent); } blocks.delete(ev.block_id); return 'close'; },
-    say_full(ev) { endThink(); renderMd(doc, row('news', '', 'reply').lastChild, ev.text || ''); return 'row'; },
+    say_end(ev) { const b = blocks.get(ev.block_id); if (b) { b.classList.remove('caret'); renderMd(doc, b, unfence(b.textContent)); } blocks.delete(ev.block_id); return 'close'; },
+    say_full(ev) { endThink(); renderMd(doc, row('news', '', 'reply').lastChild, unfence(ev.text || '')); return 'row'; },
 
     step(ev) {
       endThink();

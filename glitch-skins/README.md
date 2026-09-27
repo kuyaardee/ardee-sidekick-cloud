@@ -17,8 +17,12 @@ It draws a live Claude Code session as an MT5-style trading terminal.
 | Cost / tokens / turns | Account panel |
 | Context, 5-hour and weekly limits | Margin meters in the status bar |
 
-![session](screenshots/desk-session.png)
-![order ticket](screenshots/desk-order-ticket.png)
+Live run (Claude adding an RSI filter to a small EURUSD bot, with one sub-agent reviewing it):
+
+![live session](screenshots/live-session.png)
+![order ticket](screenshots/live-order-ticket.png)
+
+Screen recording: [screenshots/live-demo.webm](screenshots/live-demo.webm)
 
 ## Install
 
@@ -36,5 +40,8 @@ Open http://127.0.0.1:8770/skins/desk/
 - Preview with no Claude session: `uv run python run.py --replay-only`, then open
   http://127.0.0.1:8770/skins/desk/?replay=scene
 - Open as its own app window (Windows): `start chrome --app=http://127.0.0.1:8770/skins/desk/`
+- Windows one-click: put the Glitch Cat Club repo at `%USERPROFILE%\ai-coding-skins`, then run
+  `start-desk.bat C:\path\to\your\project`. It starts the bridge in a minimized window and opens the skin.
+  Close that bridge window to stop.
 
 The skin runs locally only. It doesn't change claude.ai or the Claude desktop app.
