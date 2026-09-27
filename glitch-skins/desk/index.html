@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desk</title>
+<!-- The desk skin: one Claude Code session as a trading terminal.
+     Files are symbols, steps are candles, helpers are Expert Advisors, an ask is an order ticket.
+     Every word from the stream is set as text by skin.js, never as markup. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/skins/desk/skin.css">
+</head>
+<body>
+<div id="stage">
+  <header id="bar">
+    <div class="brand"><span class="logo">▟▙</span> CLAUDE<b>TRADER</b> 5</div>
+    <div class="acct">
+      <span class="k">account</span> <span id="b-plan">–</span>
+      <span class="k">server</span> <span id="b-version">–</span>
+      <span class="k">symbol</span> <span id="b-model" class="sym">–</span>
+      <span class="k">book</span> <span id="b-folder">–</span>
+    </div>
+    <div id="conn" class="conn"><i></i><span id="conn-text">offline</span></div>
+  </header>
+
+  <nav id="tabs" aria-label="Sessions">
+    <span id="session-list"></span>
+    <button id="new-session" type="button">+ new chart</button>
+  </nav>
+
+  <aside id="left">
+    <section class="panel">
+      <h2>Market Watch <span id="mw-count" class="count">0</span></h2>
+      <div class="thead mw"><span>symbol</span><span>bid +</span><span>ask −</span><span>net</span></div>
+      <ul id="files" class="tbl"></ul>
+    </section>
+    <section class="panel grow">
+      <h2>Navigator · Expert Advisors <span id="ea-count" class="count">0</span></h2>
+      <ul id="agents"></ul>
+    </section>
+  </aside>
+
+  <main id="center">
+    <div id="chart-wrap">
+      <div class="chart-head">
+        <span id="c-sym" class="sym">SESSION</span><span class="tf">M1 · steps</span>
+        <span id="c-ohlc" class="ohlc"></span>
+        <span id="c-think" class="think" hidden>◌ analysing <b id="think-n">0</b> tok</span>
+      </div>
+      <canvas id="chart" aria-label="Each step Claude takes as a candle"></canvas>
+      <div id="ticket" hidden role="dialog" aria-label="Order confirmation"></div>
+    </div>
+    <div id="journal-head" class="tabs2">
+      <span class="on">Journal</span><span id="j-busy" class="busy">idle</span>
+    </div>
+    <div id="log" aria-live="polite"></div>
+  </main>
+
+  <aside id="right">
+    <section class="panel">
+      <h2>Trade · order ticket</h2>
+      <div id="ask"><p class="empty">no pending confirmation</p></div>
+    </section>
+    <section class="panel">
+      <h2>Pending Orders <span id="task-count" class="count">0</span></h2>
+      <ul id="tasks"></ul>
+    </section>
+    <section class="panel grow">
+      <h2>Account</h2>
+      <dl id="acct">
+        <dt>Balance used</dt><dd id="a-cost">$0.00</dd>
+        <dt>Trades (turns)</dt><dd id="a-turns">0</dd>
+        <dt>Time in market</dt><dd id="a-time">0s</dd>
+        <dt>Volume in</dt><dd id="a-in">0</dd>
+        <dt>Volume out</dt><dd id="a-out">0</dd>
+        <dt>Last close</dt><dd id="a-last">–</dd>
+      </dl>
+    </section>
+  </aside>
+
+  <footer id="status">
+    <span class="st"><span class="k">mode</span> <b id="s-mode">–</b></span>
+    <span class="st"><span class="k">effort</span> <b id="s-effort">–</b></span>
+    <span class="st meter"><span class="k">margin (context)</span><i><u id="m-ctx"></u></i><b id="s-ctx">–</b></span>
+    <span class="st meter"><span class="k">5h limit</span><i><u id="m-5h"></u></i><b id="s-5h">–</b></span>
+    <span class="st meter"><span class="k">week</span><i><u id="m-wk"></u></i><b id="s-wk">–</b></span>
+    <span class="st right"><span class="k">P/L session</span> <b id="s-cost">$0.00</b></span>
+  </footer>
+
+  <form id="compose">
+    <label for="in" class="k">new order</label>
+    <textarea id="in" rows="1" placeholder="tell Claude what to build…  (enter sends · shift+enter new line · esc stops)"></textarea>
+    <button id="send" type="submit">SEND ORDER</button>
+  </form>
+</div>
+<script type="module">
+import { connect } from '/skins/lib/stream.js';
+import { install } from '/skins/desk/skin.js';
+install(document.getElementById('stage'), connect);
+</script>
+</body>
+</html>
